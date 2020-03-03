@@ -1,26 +1,26 @@
 void getRotnDCM2D(){
 
   //Calculate new X angle from gyro data
-  dx += gyroX * gdt;
+  dz += gyroZ * gdt;
   //Overflow X data and recompute as needed
-  while (abs(dx) > oneDeg) {
-    if (dx > 0) {counterSign = 1;}
+  while (abs(dz) > oneDeg) {
+    if (dz > 0) {counterSign = 1;}
     else {counterSign = -1;}
-    dx -= counterSign * oneDeg;
+    dz -= counterSign * oneDeg;
     rollZ += counterSign;
     //cos(A+B) = cosAcosB - sinAsinB A=big B=small cos(1deg)=0.999847695~=1
-    cosX = PrevCosX * 0.999847695 - PrevSinX * (counterSign * 0.017452406);
+    cosZ = PrevCosZ * 0.999847695 - PrevSinZ * (counterSign * 0.017452406);
     //sin(A+B) = sinAcosB + cosAsinB A=big B=small
-    sinX = PrevSinX * 0.999847695 + PrevCosX * (counterSign * 0.017452406);
-    PrevCosX = cosX;
-    PrevSinX = sinX;
+    sinZ = PrevSinZ * 0.999847695 + PrevCosZ * (counterSign * 0.017452406);
+    PrevCosZ = cosZ;
+    PrevSinZ = sinZ;
     }
       
   //Compute the new y and z angles
-  dz += cosX * gyroZ * gdt;
-  dz += sinX * gyroY * gdt;
-  dy += cosX * gyroY * gdt;
-  dy -= sinX * gyroZ * gdt;
+  dx += cosZ * gyroX * gdt;
+  dx += sinZ * gyroY * gdt;
+  dy += cosZ * gyroY * gdt;
+  dy -= sinZ * gyroX * gdt;
   //Overflow Y data and recompute as needed
   while (abs(dy) > oneTenthDeg) {
     if (dy > 0) {counterSign = 1;}
@@ -29,11 +29,11 @@ void getRotnDCM2D(){
     yawY += counterSign;
     calcOffVert = true;}
     
-  //Overflow Z data and recompute as needed
-  while (abs(dz) > oneTenthDeg) {
-    if (dz > 0) {counterSign = 1;}
+  //Overflow X data and recompute as needed
+  while (abs(dx) > oneTenthDeg) {
+    if (dx > 0) {counterSign = 1;}
     else {counterSign = -1;}
-    dz -= counterSign * oneTenthDeg;
+    dx -= counterSign * oneTenthDeg;
     pitchX += counterSign;
     calcOffVert = true;}
 
